@@ -1,0 +1,8 @@
+.DS_Store
+dist/
+logs/
+data/pickled/
+data/clean/
+output/
+__pycache__/
+*.egg-info/

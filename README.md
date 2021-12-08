@@ -1,1 +1,28 @@
 # views_competition
+
+> Code and data used in the clean-up and evaluation of the 2020 ViEWS prediction competition.
+
+## Installation
+Install the requirements in a fresh virtual environment. To make one, navigate to this project's directory and run:
+```zsh
+python -m venv ./.venv
+```
+Activate the virtual environment with:
+```zsh
+source .venv/bin/activate
+```
+Finally, install the requirements into the environment with:
+```zsh
+pip install --editable .
+pip install -r requirements.txt
+```
+
+## Usage
+On the command line, run `python views_competition/run.py` with the root of this project as your current working directory. The script will first clean up and prepare the raw participant submissions, and then proceeds with their evaluation. Figure and table outputs are written to a `output` directory in the root of this project. Logs are written to the `logs` directory.
+
+The clean-up has to be run only once: the data per participant will be stored under `data/clean` after you've run it the first time. You can skip the clean-up for any subsequent times you would want to run the evaluation with the `skip_cleanup` flag:
+`python views_competition/run.py --skip_cleanup`
+
+The same applies to the concatenation of all cleaned-up submissions. The resulting tables will be stored under `data/pickled`. To also skip collection, add the `skip_collection` flag: `python views_competition/run.py --skip_cleanup --skip_collection`
+
+The total running time is approximately two hours.
