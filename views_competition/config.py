@@ -1,24 +1,25 @@
 """Configuration"""
 
 # Runner switches.
-DO_SCORES = False
-DO_ENS_T1 = False
-DO_W_ENS_T1 = False
-DO_ENS_T2 = False
-DO_DIVERSITY = False
-DO_ABLATION = False
-DO_WRITE_SCORES = False
-WRITE_DATA = False
-DO_MAPS = False
-DO_ACTUAL_MAPS = False
-DO_ERROR_MAPS = False
-DO_ERROR_PLOTS = False
-DO_LINEPLOTS = False
-DO_CORRPLOTS = False
-DO_PCOORD = False
-DO_SCATTER = False
-DO_RADAR = False
+DO_SCORES = True
+DO_ENS_T1 = True
+DO_W_ENS_T1 = True
+DO_ENS_T2 = True
+DO_DIVERSITY = True
+DO_ABLATION = True
+DO_WRITE_SCORES = True
+WRITE_DATA = True
+DO_MAPS = True
+DO_ACTUAL_MAPS = True
+DO_ERROR_MAPS = True
+DO_ERROR_PLOTS = True
+DO_LINEPLOTS = True
+DO_CORRPLOTS = True
+DO_PCOORD = True
+DO_SCATTER = True
+DO_RADAR = True
 DO_BOOTSTRAP = True
+DO_MSE_LINES = True
 
 # Column name for the actuals.
 COL_OBS = "d_ln_ged_best_sb_s{}"

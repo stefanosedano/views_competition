@@ -539,6 +539,10 @@ def run(skip_cleanup, skip_collection):
     if config.DO_BOOTSTRAP:
         bootstrap.main()
 
+    if config.DO_MSE_LINES:
+        plot.make_mse_lines("cm")
+        plot.make_mse_lines("pgm")
+
 
 if __name__ == "__main__":
     run()

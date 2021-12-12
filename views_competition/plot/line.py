@@ -9,7 +9,7 @@ from matplotlib import pyplot as plt, image as mpimg
 from matplotlib.offsetbox import AnchoredText
 
 from views_competition.plot import utilities
-from views_competition import config, DATA_DIR
+from views_competition import config, DATA_DIR, OUTPUT_DIR
 
 log = logging.getLogger(__name__)
 
@@ -564,3 +564,58 @@ def make_actual_lineplots(level, out_path):
                     out_path, f"t1_pgm_lines_lngedbest_{pgid}.png"
                 ),
             )
+
+
+def make_mse_lines(level):
+    """Make MSE lines with box-whisker."""
+    colors = utilities.get_team_colors()
+    medianprops = dict(linewidth=2.5, color='firebrick')
+    obs = pd.read_csv(os.path.join(OUTPUT_DIR, "data", f"t1_{level}_ss.csv"))
+    obs = obs[[col for col in obs if "d_ln_ged" in col]]
+    score = pd.read_csv(
+        os.path.join(OUTPUT_DIR, "tables", f"t1_{level}_mse.csv"),
+        index_col=[0],
+    )
+    # Fig.
+    meanlineprops = dict(linestyle="--", linewidth=2.5, color="grey")
+    fig = plt.figure(figsize=(7, 10))
+    gs = fig.add_gridspec(2, hspace=0)
+    axs = gs.subplots(sharex=True)
+    # Top
+    for col in score.T:
+        if col != "ensemble":
+            axs[0].plot(
+                score.T.index,
+                score.T[col],
+                label=col,
+                color=colors[level][col],
+                lw=3,
+            )
+    axs[0].grid(b=True, axis="x", color="grey", linestyle="--", alpha=0.2)
+    axs[0].legend(
+        loc="best", bbox_to_anchor=(1, 1, 0.45, 0), frameon=False
+    )
+    axs[0].set_ylabel("MSE", fontsize=14)
+    # Bottom
+    data = []
+    for col in obs:  # Note: assumes order.
+        data.append(obs[obs[col] != 0][col].values)
+    axs[1].boxplot(
+        data,
+        positions=[0, 1, 2, 3, 4, 5],
+        medianprops=medianprops,
+        showmeans=True,
+        meanprops=meanlineprops,
+        meanline=True,
+    )  # Adjust positions, thank you.
+    for i, col in enumerate(obs):
+        axs[1].scatter(i, obs[col].mean(), color="black")
+    # axs[1].set_ylim([-6, 6])
+    axs[1].set_xticklabels([f"s{i}" for i in range(2, 8)])
+    axs[1].grid(b=True, axis="x", color="grey", linestyle="--", alpha=0.2)
+    axs[1].set_ylabel("Observed delta", fontsize=14)
+    plt.savefig(
+        os.path.join(OUTPUT_DIR, "graphs/line", f"{level}_mse_box.png"),
+        dpi=200,
+        bbox_inches="tight",
+    )
