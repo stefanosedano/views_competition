@@ -15,7 +15,7 @@ log = logging.getLogger(__name__)
 def clean():
     log.info(f"Starting {__name__}.")
 
-    cm = pd.read_parquet(os.path.join(DATA_DIR, "ged_cm_postpatch.parquet"))
+    cm = pd.read_parquet(os.path.join(DATA_DIR, "ged_cm_prepatch.parquet"))
     cm["ln_ged_best_sb"] = np.log1p(cm["ged_best_sb"])
 
     with tempfile.TemporaryDirectory() as tempdir:
