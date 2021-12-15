@@ -591,3 +591,38 @@ def add_pemdiv():
             if team_id == "no_change":
                 team_id = "no_change_pgm"  # TODO: crappy correction.
             t1_ss_scores["pgm"][team_id][step].update({"PEMDIV": score})
+
+
+def write_ensemble_tables(path):
+    """Write final ensemble tables including both t1 and t2."""
+    t1ss = pd.read_pickle(os.path.join(OUTPUT_DIR, "tables/t1_ss_scores.pkl"))
+    t1sc = pd.read_pickle(os.path.join(OUTPUT_DIR, "tables/t1_sc_scores.pkl"))
+    t2 = pd.read_pickle(os.path.join(OUTPUT_DIR, "tables/t2_scores.pkl"))
+    # For cm...
+    cm_ens = (
+        pd.DataFrame(t1ss["cm"]["w_ensemble"])
+        .join(pd.DataFrame(t1sc["cm"]["w_ensemble"], index=["sc"]).T)
+        .T[["MSE", "TADDA_1", "TADDA_2"]]
+        .add_prefix("t1_")
+        .join(
+            pd.DataFrame(t2["cm"]["ensemble"])
+            .T[["MSE", "TADDA_1", "TADDA_2"]]
+            .add_prefix("t2_")
+        )
+    )
+    round(cm_ens, 3).to_latex(os.path.join(path, "cm_ensemble_scores.tex"))
+    # for pgm...
+    pgm_ens = (
+        pd.DataFrame(t1sc["pgm"]["w_ensemble"], index=["sc"])
+        .T.join(pd.DataFrame(t1ss["pgm"]["w_ensemble"]))
+        .T[["MSE", "TADDA_1", "TADDA_2", "PEMDIV"]]
+        .add_prefix("t1_")
+        .join(
+            pd.DataFrame(t2["pgm"]["ensemble"])
+            .T[["MSE", "TADDA_1", "TADDA_2", "PEMDIV"]]
+            .add_prefix("t2_")
+        )
+    )
+    round(pgm_ens.loc[list(range(2, 8)) + ["sc"]], 3).to_latex(
+        os.path.join(path, "pgm_ensemble_scores.tex")
+    )

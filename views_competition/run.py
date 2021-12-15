@@ -284,11 +284,6 @@ def run(skip_cleanup, skip_collection):
         ) as f:
             pickle.dump(evaluate.t1_ss_scores, f)
         evaluate.write_ss_scores(out_path=os.path.join(OUTPUT_DIR, "tables"))
-        # evaluate.scores_to_csv(
-        #     evaluate.t2_scores,
-        #     out_path=os.path.join(OUTPUT_DIR, "tables/"),
-        # )
-        # TODO: to_csv for t1 ss?
         log.info("Writing collected t1 sc scores to csv.")
         pd.DataFrame(evaluate.t1_sc_scores["cm"]).T.sort_values(
             by="MSE"
@@ -305,6 +300,8 @@ def run(skip_cleanup, skip_collection):
             pd.DataFrame(evaluate.t1_sc_scores["pgm"]).T.sort_values(by="MSE"),
             3,
         ).to_latex(os.path.join(OUTPUT_DIR, "tables", "t1_pgm_sc_scores.tex"))
+        # Also write t1/t2 ensemble tables to file.
+        evaluate.write_ensemble_tables(os.path.join(OUTPUT_DIR, "tables"))
 
     if config.WRITE_DATA:
         log.info("Writing data to file.")
@@ -535,7 +532,7 @@ def run(skip_cleanup, skip_collection):
 
     log.info("Finished producing competition output.")
 
-
+    # Added outputs.
     if config.DO_BOOTSTRAP:
         bootstrap.main()
 
