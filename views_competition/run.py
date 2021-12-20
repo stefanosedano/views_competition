@@ -14,6 +14,7 @@ from views_competition import (
     evaluate,
     ensemble,
     bootstrap,
+    pemdiv,
     CLEAN_DIR,
     PICKLE_DIR,
     OUTPUT_DIR,
@@ -258,18 +259,20 @@ def run(skip_cleanup, skip_collection):
         )
 
     config.COLUMN_SETS = column_sets
+    if config.DO_PEMDIV:
+        pemdiv.run_pemdiv()
+        log.info("Adding pemdiv to scores from file.")
+        evaluate.add_pemdiv()
+
     # With all scores now collected, write to tables.
     if config.DO_WRITE_SCORES:
         if not (
-            config.DO_SCORES and config.DO_DIVERSITY and config.DO_ABLATION
+            config.DO_SCORES and config.DO_DIVERSITY and config.DO_ABLATION and config.DO_PEMDIV
         ):
             raise RuntimeError(
                 "DO_WRITE_SCORES requires all scores."
-                "Set DO_SCORES, DO_DIVERSITY, DO_ABLATION to True."
+                "Set DO_SCORES, DO_DIVERSITY, DO_ABLATION, DO_PEMDIV to True."
             )
-        # TODO: plotting breaks if this not run!
-        log.info("Adding pemdiv from external file.")
-        evaluate.add_pemdiv()
         log.info("Writing t2 and t1 ss scores to pickles and tables.")
         with open(
             os.path.join(OUTPUT_DIR, "tables", "t2_scores.pkl"), "wb"
@@ -516,7 +519,7 @@ def run(skip_cleanup, skip_collection):
 
     if config.DO_RADAR:
         if not (
-            config.DO_SCORES and config.DO_DIVERSITY and config.DO_ABLATION
+            config.DO_SCORES and config.DO_DIVERSITY and config.DO_ABLATION and config.DO_PEMDIV
         ):
             raise RuntimeError(
                 "DO_RADAR requires all scores."

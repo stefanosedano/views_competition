@@ -51,7 +51,7 @@ def setup_dirs():
 def output_dirs(output_path):
     """Creates the necessary output dirs per out_path."""
     out_paths = {
-        "maps": ["error", "observed", "predicted", "ensemble"],
+        "maps": ["error", "observed", "predicted", "ensemble", "pemdiv"],
         "graphs": [
             "error",
             "line",

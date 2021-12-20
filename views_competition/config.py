@@ -6,6 +6,7 @@ DO_ENS_T1 = True
 DO_W_ENS_T1 = True
 DO_ENS_T2 = True
 DO_DIVERSITY = True
+DO_PEMDIV = True
 DO_ABLATION = True
 DO_WRITE_SCORES = True
 WRITE_DATA = True

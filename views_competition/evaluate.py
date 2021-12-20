@@ -10,10 +10,7 @@ import pandas as pd
 import numpy as np
 from sklearn import metrics
 
-import config
-import datautils
-import evallib
-from views_competition import OUTPUT_DIR
+from views_competition import config, evallib, datautils, OUTPUT_DIR
 
 np.seterr(divide="ignore", invalid="ignore")  # Ignore division by zero.
 log = logging.getLogger(__name__)
