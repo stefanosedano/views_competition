@@ -542,8 +542,6 @@ def run(skip_cleanup, skip_collection):
             level="pgm", out_path=os.path.join(OUTPUT_DIR, "graphs", "radar")
         )
 
-    log.info("Finished producing competition output.")
-
     # Added outputs.
     if config.DO_BOOTSTRAP:
         bootstrap.main()
@@ -551,6 +549,8 @@ def run(skip_cleanup, skip_collection):
     if config.DO_MSE_LINES:
         plot.make_mse_lines("cm")
         plot.make_mse_lines("pgm")
+
+    log.info("Finished producing competition output.")
 
 
 if __name__ == "__main__":
