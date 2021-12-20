@@ -286,7 +286,9 @@ def run(skip_cleanup, skip_collection):
         )
 
     if config.DO_PEMDIV:
+        log.info("Computing pemdiv for t2...")
         pemdiv_all_t2.compute_pemdiv()
+        log.info("Computing pemdiv for t1...")
         pemdiv_all_t1.compute_pemdiv()
         log.info("Adding pemdiv to scores from file.")
         evaluate.add_pemdiv()
