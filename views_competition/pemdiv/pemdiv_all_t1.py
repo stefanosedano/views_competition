@@ -4,14 +4,14 @@ import os
 import pickle
 import pandas as pd
 import numpy as np
-from pemdiv import *
-import pemdiv_single_step
 
 import matplotlib
 import matplotlib.colors as colors
 import matplotlib.pyplot as plt
 
 from views_competition.plot import maps
+from views_competition.pemdiv import pemdiv_single_step
+from views_competition.pemdiv.pemdiv import *
 from views_competition import OUTPUT_DIR
 
 mapdata = maps.MapData()
@@ -77,10 +77,14 @@ def compute_pemdiv():
                     if i != j:
                         dist_matrix[i, j] = 1
 
-        with open("pemdiv_pg_dist_matrix.pickle", "wb") as f:
+        with open(
+            os.path.join(OUTPUT_DIR, "data/pemdiv_pg_dist_matrix.pickle"), "wb"
+        ) as f:
             pickle.dump(dist_matrix, f, pickle.HIGHEST_PROTOCOL)
     else:
-        with open("pemdiv_pg_dist_matrix.pickle", "rb") as f:
+        with open(
+            os.path.join(OUTPUT_DIR, "data/pemdiv_pg_dist_matrix.pickle"), "rb"
+        ) as f:
             dist_matrix = pickle.load(f)
 
     # Create a list of columns containing predictions, and a parallel list of the
@@ -120,10 +124,20 @@ def compute_pemdiv():
             tloc_col="month_id",
             node_id_col="node_id",
         )
-        with open("pemdiv_pg_panel_edges_dict_t1.pickle", "wb") as f:
+        with open(
+            os.path.join(
+                OUTPUT_DIR, "data/pemdiv_pg_panel_edges_dict_t1.pickle"
+            ),
+            "wb",
+        ) as f:
             pickle.dump(panel_edges_dict, f, pickle.HIGHEST_PROTOCOL)
     else:
-        with open("pemdiv_pg_panel_edges_dict_t1.pickle", "rb") as f:
+        with open(
+            os.path.join(
+                OUTPUT_DIR, "data/pemdiv_pg_panel_edges_dict_t1.pickle"
+            ),
+            "rb",
+        ) as f:
             panel_edges_dict = pickle.load(f)
 
     print(len(panel_edges_dict["edge_heads"]))
@@ -293,10 +307,20 @@ def compute_pemdiv():
                     if i != j:
                         dist_matrix[i, j] = 1
 
-        with open("pemdiv_pg_dist_matrix_subset.pickle", "wb") as f:
+        with open(
+            os.path.join(
+                OUTPUT_DIR, "data/pemdiv_pg_dist_matrix_subset.pickle"
+            ),
+            "wb",
+        ) as f:
             pickle.dump(dist_matrix, f, pickle.HIGHEST_PROTOCOL)
     else:
-        with open("pemdiv_pg_dist_matrix_subset.pickle", "rb") as f:
+        with open(
+            os.path.join(
+                OUTPUT_DIR, "data/pemdiv_pg_dist_matrix_subset.pickle"
+            ),
+            "rb",
+        ) as f:
             dist_matrix = pickle.load(f)
 
     compute_edges = True
@@ -309,10 +333,20 @@ def compute_pemdiv():
             tloc_col="month_id",
             node_id_col="node_id",
         )
-        with open("pemdiv_pg_panel_edges_dict_subset_t1.pickle", "wb") as f:
+        with open(
+            os.path.join(
+                OUTPUT_DIR, "data/pemdiv_pg_panel_edges_dict_subset_t1.pickle"
+            ),
+            "wb",
+        ) as f:
             pickle.dump(panel_edges_dict, f, pickle.HIGHEST_PROTOCOL)
     else:
-        with open("pemdiv_pg_panel_edges_dict_subset_t1.pickle", "rb") as f:
+        with open(
+            os.path.join(
+                OUTPUT_DIR, "data/pemdiv_pg_panel_edges_dict_subset_t1.pickle"
+            ),
+            "rb",
+        ) as f:
             panel_edges_dict = pickle.load(f)
 
     month = 490

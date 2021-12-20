@@ -14,11 +14,11 @@ from views_competition import (
     evaluate,
     ensemble,
     bootstrap,
-    pemdiv,
     CLEAN_DIR,
     PICKLE_DIR,
     OUTPUT_DIR,
 )
+from views_competition.pemdiv import pemdiv_all_t1, pemdiv_all_t2
 
 log = logging.getLogger(__name__)
 
@@ -259,8 +259,35 @@ def run(skip_cleanup, skip_collection):
         )
 
     config.COLUMN_SETS = column_sets
+    if config.WRITE_DATA:
+        log.info("Writing data to file.")
+        # Task one.
+        collection.cm_t1.join(ens_cm_t1).join(w_ens_cm_t1).to_csv(
+            os.path.join(OUTPUT_DIR, "data", "t1_cm.csv")
+        )
+        collection.pgm_t1.join(ens_pgm_t1).join(w_ens_pgm_t1).to_csv(
+            os.path.join(OUTPUT_DIR, "data", "t1_pgm.csv")
+        )
+        collection.cm_t1_ss.join(ens_cm_t1_ss).join(w_ens_cm_t1_ss).to_csv(
+            os.path.join(OUTPUT_DIR, "data", "t1_cm_ss.csv")
+        )
+        collection.pgm_t1_ss.join(ens_pgm_t1_ss).join(w_ens_pgm_t1_ss).to_csv(
+            os.path.join(OUTPUT_DIR, "data", "t1_pgm_ss.csv")
+        )
+        # Task two (includes ensemble).
+        collection.cm_t2.to_csv(os.path.join(OUTPUT_DIR, "data", "t2_cm.csv"))
+        collection.pgm_t2.to_csv(
+            os.path.join(OUTPUT_DIR, "data", "t2_pgm.csv")
+        )
+        # Task three.
+        collection.cm_t3.to_csv(os.path.join(OUTPUT_DIR, "data", "t3_cm.csv"))
+        collection.pgm_t3.to_csv(
+            os.path.join(OUTPUT_DIR, "data", "t3_pgm.csv")
+        )
+
     if config.DO_PEMDIV:
-        pemdiv.run_pemdiv()
+        pemdiv_all_t2.compute_pemdiv()
+        pemdiv_all_t1.compute_pemdiv()
         log.info("Adding pemdiv to scores from file.")
         evaluate.add_pemdiv()
 
@@ -306,31 +333,6 @@ def run(skip_cleanup, skip_collection):
         # Also write t1/t2 ensemble tables to file.
         evaluate.write_ensemble_tables(os.path.join(OUTPUT_DIR, "tables"))
 
-    if config.WRITE_DATA:
-        log.info("Writing data to file.")
-        # Task one.
-        collection.cm_t1.join(ens_cm_t1).join(w_ens_cm_t1).to_csv(
-            os.path.join(OUTPUT_DIR, "data", "t1_cm.csv")
-        )
-        collection.pgm_t1.join(ens_pgm_t1).join(w_ens_pgm_t1).to_csv(
-            os.path.join(OUTPUT_DIR, "data", "t1_pgm.csv")
-        )
-        collection.cm_t1_ss.join(ens_cm_t1_ss).join(w_ens_cm_t1_ss).to_csv(
-            os.path.join(OUTPUT_DIR, "data", "t1_cm_ss.csv")
-        )
-        collection.pgm_t1_ss.join(ens_pgm_t1_ss).join(w_ens_pgm_t1_ss).to_csv(
-            os.path.join(OUTPUT_DIR, "data", "t1_pgm_ss.csv")
-        )
-        # Task two (includes ensemble).
-        collection.cm_t2.to_csv(os.path.join(OUTPUT_DIR, "data", "t2_cm.csv"))
-        collection.pgm_t2.to_csv(
-            os.path.join(OUTPUT_DIR, "data", "t2_pgm.csv")
-        )
-        # Task three.
-        collection.cm_t3.to_csv(os.path.join(OUTPUT_DIR, "data", "t3_cm.csv"))
-        collection.pgm_t3.to_csv(
-            os.path.join(OUTPUT_DIR, "data", "t3_pgm.csv")
-        )
 
     if config.DO_MAPS:
         if not (config.DO_ENS_T1 and config.DO_W_ENS_T1 and config.DO_ENS_T2):

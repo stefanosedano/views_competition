@@ -4,8 +4,8 @@ import os
 import pickle
 import pandas as pd
 import numpy as np
-from pemdiv import *
 
+from views_competition.pemdiv.pemdiv import *
 from views_competition import OUTPUT_DIR
 
 
@@ -65,7 +65,7 @@ def compute_pemdiv():
     # neighbours.
 
     # This is very time-consuming, so save to disk once done.
-    compute_matrix = False
+    compute_matrix = True
     if compute_matrix:
         for pg_id in pg_ids:
             interactions.append(sp_qlag_pg(pg_id, steps=nspacestep))
@@ -80,10 +80,14 @@ def compute_pemdiv():
                     if i != j:
                         dist_matrix[i, j] = 1
 
-        with open("pemdiv_pg_dist_matrix.pickle", "wb") as f:
+        with open(
+            os.path.join(OUTPUT_DIR, "data/pemdiv_pg_dist_matrix.pickle"), "wb"
+        ) as f:
             pickle.dump(dist_matrix, f, pickle.HIGHEST_PROTOCOL)
     else:
-        with open("pemdiv_pg_dist_matrix.pickle", "rb") as f:
+        with open(
+            os.path.join(OUTPUT_DIR, "data/pemdiv_pg_dist_matrix.pickle"), "rb"
+        ) as f:
             dist_matrix = pickle.load(f)
 
     # Generate list of predicted columns.
@@ -116,7 +120,7 @@ def compute_pemdiv():
     add_int_node_id_to_df(df_bench_task2)
 
     # Generate PEMDIV graph - this is expensive, so save to disk once done.
-    compute_edges = False
+    compute_edges = True
     if compute_edges:
         panel_edges_dict = make_edgesDict_from_df_panel(
             dist_matrix,
@@ -126,10 +130,20 @@ def compute_pemdiv():
             tloc_col="month_id",
             node_id_col="node_id",
         )
-        with open("pemdiv_pg_panel_edges_dict_t2.pickle", "wb") as f:
+        with open(
+            os.path.join(
+                OUTPUT_DIR, "data/pemdiv_pg_panel_edges_dict_t2.pickle"
+            ),
+            "wb",
+        ) as f:
             pickle.dump(panel_edges_dict, f, pickle.HIGHEST_PROTOCOL)
     else:
-        with open("pemdiv_pg_panel_edges_dict_t2.pickle", "rb") as f:
+        with open(
+            os.path.join(
+                OUTPUT_DIR, "data/pemdiv_pg_panel_edges_dict_t2.pickle"
+            ),
+            "rb",
+        ) as f:
             panel_edges_dict = pickle.load(f)
 
     print(len(panel_edges_dict["edge_heads"]))
