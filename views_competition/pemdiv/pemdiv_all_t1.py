@@ -248,7 +248,7 @@ def compute_pemdiv():
 
     df_results = pd.DataFrame(df_dict)
     df_results.to_csv(
-        os.path.join(OUTPUT_DIR, "data", "task1_pemdiv_revised.csv"),
+        os.path.join(OUTPUT_DIR, "data", "t1_pemdiv_revised_sc.csv"),
         index=False,
     )
 
@@ -684,7 +684,7 @@ def compute_pemdiv():
     df_results = pd.DataFrame(df_dict)
 
     df_results.to_csv(
-        os.path.join(OUTPUT_DIR, "data", "task1_ss_pemdiv_revised.csv"),
+        os.path.join(OUTPUT_DIR, "data", "t1_pemdiv_revised_ss.csv"),
         index=False,
     )
 

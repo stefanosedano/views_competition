@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from scipy.spatial import ConvexHull
 import pickle
-import pemdiv
+from views_competition.pemdiv import pemdiv
 
 
 def sp_qlag_pg(pg_id, steps=1):
