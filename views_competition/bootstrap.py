@@ -12,38 +12,6 @@ from views_competition.plot import utilities
 log = logging.getLogger(__name__)
 
 
-cm_t1 = (
-    pd.read_csv(os.path.join(OUTPUT_DIR, "data/t1_cm.csv"))
-    .set_index(["month_id", "country_id"])
-    .sort_index()
-)
-cm_t1_ss = (
-    pd.read_csv(os.path.join(OUTPUT_DIR, "data/t1_cm_ss.csv"))
-    .set_index("country_id")
-    .sort_index()
-)
-cm_t2 = (
-    pd.read_csv(os.path.join(OUTPUT_DIR, "data/t2_cm.csv"))
-    .set_index(["month_id", "country_id"])
-    .sort_index()
-)
-pgm_t1 = (
-    pd.read_csv(os.path.join(OUTPUT_DIR, "data/t1_pgm.csv"))
-    .set_index(["month_id", "pg_id"])
-    .sort_index()
-)
-pgm_t1_ss = (
-    pd.read_csv(os.path.join(OUTPUT_DIR, "data/t1_pgm_ss.csv"))
-    .set_index("pg_id")
-    .sort_index()
-)
-pgm_t2 = (
-    pd.read_csv(os.path.join(OUTPUT_DIR, "data/t2_pgm.csv"))
-    .set_index(["month_id", "pg_id"])
-    .sort_index()
-)
-
-
 def bootstrap_metric(
     obs,
     pred,
@@ -421,6 +389,37 @@ def plot_bootstraps_ss_line(
 
 def main():
     """Produces bootstrapping outputs."""
+    cm_t1 = (
+        pd.read_csv(os.path.join(OUTPUT_DIR, "data/t1_cm.csv"))
+        .set_index(["month_id", "country_id"])
+        .sort_index()
+    )
+    cm_t1_ss = (
+        pd.read_csv(os.path.join(OUTPUT_DIR, "data/t1_cm_ss.csv"))
+        .set_index("country_id")
+        .sort_index()
+    )
+    cm_t2 = (
+        pd.read_csv(os.path.join(OUTPUT_DIR, "data/t2_cm.csv"))
+        .set_index(["month_id", "country_id"])
+        .sort_index()
+    )
+    pgm_t1 = (
+        pd.read_csv(os.path.join(OUTPUT_DIR, "data/t1_pgm.csv"))
+        .set_index(["month_id", "pg_id"])
+        .sort_index()
+    )
+    pgm_t1_ss = (
+        pd.read_csv(os.path.join(OUTPUT_DIR, "data/t1_pgm_ss.csv"))
+        .set_index("pg_id")
+        .sort_index()
+    )
+    pgm_t2 = (
+        pd.read_csv(os.path.join(OUTPUT_DIR, "data/t2_pgm.csv"))
+        .set_index(["month_id", "pg_id"])
+        .sort_index()
+    )
+    # Do the bootstraps.
     for df in [cm_t1, pgm_t1]:
         level = "cm" if "country_id" in df.index.names else "pgm"
         task = datautils.determine_task(df)
