@@ -571,12 +571,13 @@ def add_pemdiv():
     for step, teamscores in df.to_dict().items():
         for team_id, score in teamscores.items():
             if team_id == "no_change":
-                team_id = "no_change_pgm"  # TODO: crappy correction.
+                team_id = "no_change_pgm"
             t2_scores["pgm"][team_id][step].update({"PEMDIV": score})
     # For task one sc...
     df = pd.read_csv(os.path.join(PEMDIV_PATH, "t1_pemdiv_revised_sc.csv"))
-    # log.info(t1_sc_scores)
     for team_id, score in df.loc[0].T.to_dict().items():
+        if team_id == "no_change":
+            team_id = "no_change_pgm"
         t1_sc_scores["pgm"][team_id].update({"PEMDIV": score})
     # For task one ss...
     df = pd.read_csv(
@@ -586,7 +587,7 @@ def add_pemdiv():
     for step, teamscores in df.to_dict().items():
         for team_id, score in teamscores.items():
             if team_id == "no_change":
-                team_id = "no_change_pgm"  # TODO: crappy correction.
+                team_id = "no_change_pgm"
             t1_ss_scores["pgm"][team_id][step].update({"PEMDIV": score})
 
 
