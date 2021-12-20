@@ -296,7 +296,10 @@ def run(skip_cleanup, skip_collection):
     # With all scores now collected, write to tables.
     if config.DO_WRITE_SCORES:
         if not (
-            config.DO_SCORES and config.DO_DIVERSITY and config.DO_ABLATION and config.DO_PEMDIV
+            config.DO_SCORES
+            and config.DO_DIVERSITY
+            and config.DO_ABLATION
+            and config.DO_PEMDIV
         ):
             raise RuntimeError(
                 "DO_WRITE_SCORES requires all scores."
@@ -334,7 +337,6 @@ def run(skip_cleanup, skip_collection):
         ).to_latex(os.path.join(OUTPUT_DIR, "tables", "t1_pgm_sc_scores.tex"))
         # Also write t1/t2 ensemble tables to file.
         evaluate.write_ensemble_tables(os.path.join(OUTPUT_DIR, "tables"))
-
 
     if config.DO_MAPS:
         if not (config.DO_ENS_T1 and config.DO_W_ENS_T1 and config.DO_ENS_T2):
@@ -523,7 +525,10 @@ def run(skip_cleanup, skip_collection):
 
     if config.DO_RADAR:
         if not (
-            config.DO_SCORES and config.DO_DIVERSITY and config.DO_ABLATION and config.DO_PEMDIV
+            config.DO_SCORES
+            and config.DO_DIVERSITY
+            and config.DO_ABLATION
+            and config.DO_PEMDIV
         ):
             raise RuntimeError(
                 "DO_RADAR requires all scores."

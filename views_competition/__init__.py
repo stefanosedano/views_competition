@@ -14,6 +14,7 @@ SOURCE_DIR = os.path.join(ROOT_DIR, "data", "raw")
 CLEAN_DIR = os.path.join(ROOT_DIR, "data", "clean")
 OUTPUT_DIR = os.path.join(ROOT_DIR, "output")
 
+
 def setup_dirs():
     """Main directories in root."""
     dirs = [
@@ -26,6 +27,7 @@ def setup_dirs():
     for path_dir in dirs:
         if not os.path.isdir(path_dir):
             os.mkdir(path_dir)
+
 
 setup_dirs()
 
@@ -47,6 +49,7 @@ TIMEFRAMES = {
     1: list(range(490, 496)),  # Oct 2020-March 2021
     2: list(range(469, 475)),  # Jan 2019-June 2019
 }
+
 
 def output_dirs(output_path):
     """Creates the necessary output dirs per out_path."""
@@ -73,5 +76,6 @@ def output_dirs(output_path):
             subpath = os.path.join(path, subdir)
             if not os.path.isdir(subpath):
                 os.makedirs(subpath)
+
 
 output_dirs(OUTPUT_DIR)

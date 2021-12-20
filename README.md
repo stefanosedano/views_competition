@@ -22,4 +22,6 @@ On the command line, run `python views_competition/run.py` with the root of this
 
 The script will first clean up and prepare the raw participant submissions, and then proceeds with their evaluation. Figure and table outputs are written to a `output` directory in the root of this project. Logs are written to the `logs` directory.
 
+Parts of the script can be skipped or individually run by adjusting `views_competition/config.py`.
+
 The total running time is approximately five hours.
