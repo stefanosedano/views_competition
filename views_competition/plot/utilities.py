@@ -105,7 +105,7 @@ def get_team_colors():
             team_colors[level]["chadefaux"] = cmap[add_index + 2]
             team_colors[level]["dorazio"] = cmap[add_index + 3]
             team_colors[level]["ensemble"] = cmap[add_index + 4]
-            team_colors[level]["w_ensemble"] = cmap[add_index + 5]
+            team_colors[level]["w_ensemble"] = cmap[add_index + 4]
         else:
             for col in vestby:
                 team_colors[level][col] = cmap[add_index + 1]
