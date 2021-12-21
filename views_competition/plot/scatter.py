@@ -68,8 +68,9 @@ def make_scatterplots(level, out_path):
     collection = utilities.collect_scores(level, steps)
     for task in ["t1_ss", "t2_ss", "t1_sc"]:
         for step, df in collection[task].items():
-            # Drop the ensembles ex-post.
+            # Drop the ensembles and no-change ex-post.
             df = df.loc[[idx for idx in df.index if "ensemble" not in idx]]
+            df = df.loc[[idx for idx in df.index if "no_change" not in idx]]
             prefix = "s" if step != "sc" else ""
             simple_scatter(
                 df=df,
