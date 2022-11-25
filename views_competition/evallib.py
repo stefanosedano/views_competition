@@ -127,6 +127,32 @@ def wrong_dir_penalty(
         raise ValueError(f"d must be 0, 1, or 2; recieved d={d}")
 
 
+def tadda_GFFO(
+    y_true: np.array,
+    y_pred: np.array,
+    d: Optional[int] = 2,
+    epsilon: Optional[float] = 0.048,
+    absolute_dist: bool = True,
+    middle_closed_interval: bool = True,
+    element_by_element: bool = False,
+    loud: bool = False,
+) -> Union[float, np.array]:
+    from sklearn.metrics import mean_absolute_error, mean_squared_error
+    mae = mean_absolute_error(y_true, y_pred)
+
+    wrong_signs1 = (np.sign(y_pred) * np.sign(y_true) == -1).astype("int")  # differnt sing
+    wrong_signs2 = ((np.sign(y_pred) == 0).astype("int")) * (
+        (np.abs(np.sign(y_true)) > 0).astype("int"))  # pred == 0 and true <> 0
+    wrong_signs3 = ((np.sign(y_true) == 0).astype("int")) * (
+        (np.abs(np.sign(y_pred)) > 0).astype("int"))  # true == 0 and pred <> 0
+    wrong_signs = ((wrong_signs1 + wrong_signs2 + wrong_signs3) > 0).astype("int")
+
+    significant_diff = (np.abs(y_true - y_pred) > epsilon).astype("int")
+    sign_loss = (2 * mae * wrong_signs * significant_diff).mean()
+
+    return mae + sign_loss
+
+
 def tadda_score(
     y_deltas: np.array,
     f_deltas: np.array,

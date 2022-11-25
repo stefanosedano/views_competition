@@ -34,6 +34,7 @@ METRICS = {
     "corr": lambda obs, pred: pred.corr(obs),
     "corr_negative": lambda obs, pred: pred.corr(obs),
     "corr_positive": lambda obs, pred: pred.corr(obs),
+    "tadda_GFFO": lambda obs, pred: evallib.tadda_GFFO(obs, pred, 1),
 }
 PEMDIV_PATH = os.path.join(OUTPUT_DIR, "data")
 
