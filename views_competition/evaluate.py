@@ -34,7 +34,6 @@ METRICS = {
     "corr": lambda obs, pred: pred.corr(obs),
     "corr_negative": lambda obs, pred: pred.corr(obs),
     "corr_positive": lambda obs, pred: pred.corr(obs),
-    "tadda_GFFO": lambda obs, pred: evallib.tadda_GFFO(obs, pred, 1),
 }
 PEMDIV_PATH = os.path.join(OUTPUT_DIR, "data")
 
@@ -223,7 +222,6 @@ def write_ss_scores(out_path):
             "MAL_TADDA_1",
             "MAL_TADDA_2",
             "MAL_DIV",
-            "tadda_GFFO",
         ]:
             # Collect relevant stepwise columns from collected scores.
             task_dfs = []
@@ -237,7 +235,6 @@ def write_ss_scores(out_path):
                     "MAL_TADDA_2",
                     "MAL_DIV",
                     "DIV",
-                    "tadda_GFFO",
                 ):
                     drops = drops + [
                         "ensemble",
@@ -303,7 +300,7 @@ def write_ss_scores_combined(out_path):
             "MAL_TADDA_1",
             "MAL_TADDA_2",
             "MAL_DIV",
-            "tadda_GFFO",
+
         ]:
             # Collect relevant stepwise columns from collected scores.
             task_dfs = []
@@ -317,7 +314,7 @@ def write_ss_scores_combined(out_path):
                     "MAL_TADDA_2",
                     "MAL_DIV",
                     "DIV",
-                    "tadda_GFFO",
+
                 ):
                     drops = drops + [
                         "ensemble",
@@ -404,9 +401,9 @@ def scores_to_csv(scores, out_path):
         "MAL_TADDA_1",
         "MAL_TADDA_2",
         "MAL_DIV",
-        "tadda_GFFO",
+
     ]:
-        if metric in ("MSE", "TADDA_1", "TADDA_2", "tadda_GFFO"):
+        if metric in ("MSE", "TADDA_1", "TADDA_2"):
             drops = config.DROPS_ENS_T2[:-1]  # Drop ensemble from list.
         else:
             drops = config.DROPS_ENS_T2
@@ -513,7 +510,7 @@ def ablation_study(df, column_sets):
                 "MSE": METRICS["MSE"],
                 "TADDA_1": METRICS["TADDA_1"],
                 "TADDA_2": METRICS["TADDA_2"],
-                "tadda_GFFO": METRICS["tadda_GFFO"],
+
             }.items():
                 ablated_score = function(obs, ablated_ensemble)
                 ensemble_score = function(obs, full_ensemble)
@@ -549,7 +546,7 @@ def ablation_study(df, column_sets):
                     "MSE": METRICS["MSE"],
                     "TADDA_1": METRICS["TADDA_1"],
                     "TADDA_2": METRICS["TADDA_2"],
-                    "tadda_GFFO": METRICS["tadda_GFFO"],
+
                 }.items():
                     ablated_score = function(obs, ablated_ensemble)
                     ensemble_score = function(obs, full_ensemble)
