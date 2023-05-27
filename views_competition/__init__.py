@@ -6,7 +6,8 @@ import datetime
 # TODO: find solution to root path not depending on virtualenv.
 # Perhaps if VIRTUAL_ENV not in environ, just get the absolute path.
 # Test that with conda.
-ROOT_DIR = os.path.split(os.environ["VIRTUAL_ENV"])[0]
+#ROOT_DIR = os.path.split(os.environ["VIRTUAL_ENV"])[0]
+ROOT_DIR = "C:\\Users\\email\\Documents\\German FFO\\views_competition"
 LOG_DIR = os.path.join(ROOT_DIR, "logs")
 DATA_DIR = os.path.join(ROOT_DIR, "data")
 PICKLE_DIR = os.path.join(ROOT_DIR, "data", "pickled")

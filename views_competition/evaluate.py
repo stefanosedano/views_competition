@@ -16,13 +16,12 @@ np.seterr(divide="ignore", invalid="ignore")  # Ignore division by zero.
 log = logging.getLogger(__name__)
 
 METRICS = {
-    "MSE": metrics.mean_squared_error,
-    "MSE_nonzero": metrics.mean_squared_error,
-    "MSE_zero": metrics.mean_squared_error,
-    "MSE_negative": metrics.mean_squared_error,
-    "MSE_positive": metrics.mean_squared_error,
-    "CCC": evallib.concordance_correlation_coefficient,
+
     # "R2": evallib.r2_score,
+    "Recall": lambda obs, pred: metrics.recall_score((obs*1000000).astype(int), (pred*1000000).astype(int),average='micro'),
+    "Accuracy": lambda obs, pred: metrics.accuracy_score((obs * 1000000).astype(int), (pred * 1000000).astype(int)),
+    "Precision": lambda obs, pred: metrics.precision_score((obs * 1000000).astype(int), (pred * 1000000).astype(int),average='micro'),
+    "F1": lambda obs, pred: metrics.f1_score((obs * 1000000).astype(int), (pred * 1000000).astype(int), average='micro'),
     "TADDA_1": lambda obs, pred: evallib.tadda_score(obs, pred, 1),
     "TADDA_1_nonzero": lambda obs, pred: evallib.tadda_score(obs, pred, 1),
     "TADDA_2": lambda obs, pred: evallib.tadda_score(obs, pred, 2),
@@ -34,6 +33,13 @@ METRICS = {
     "corr": lambda obs, pred: pred.corr(obs),
     "corr_negative": lambda obs, pred: pred.corr(obs),
     "corr_positive": lambda obs, pred: pred.corr(obs),
+    "tadda_GFFO": lambda obs, pred: evallib.tadda_GFFO(obs, pred, 1),
+"MSE": metrics.mean_squared_error,
+    "MSE_nonzero": metrics.mean_squared_error,
+    "MSE_zero": metrics.mean_squared_error,
+    "MSE_negative": metrics.mean_squared_error,
+    "MSE_positive": metrics.mean_squared_error,
+    "CCC": evallib.concordance_correlation_coefficient,
 }
 PEMDIV_PATH = os.path.join(OUTPUT_DIR, "data")
 
@@ -222,6 +228,7 @@ def write_ss_scores(out_path):
             "MAL_TADDA_1",
             "MAL_TADDA_2",
             "MAL_DIV",
+            "tadda_GFFO",
         ]:
             # Collect relevant stepwise columns from collected scores.
             task_dfs = []
@@ -300,6 +307,7 @@ def write_ss_scores_combined(out_path):
             "MAL_TADDA_1",
             "MAL_TADDA_2",
             "MAL_DIV",
+            "tadda_GFFO",
 
         ]:
             # Collect relevant stepwise columns from collected scores.
@@ -401,6 +409,7 @@ def scores_to_csv(scores, out_path):
         "MAL_TADDA_1",
         "MAL_TADDA_2",
         "MAL_DIV",
+        "tadda_GFFO",
 
     ]:
         if metric in ("MSE", "TADDA_1", "TADDA_2"):
@@ -510,6 +519,7 @@ def ablation_study(df, column_sets):
                 "MSE": METRICS["MSE"],
                 "TADDA_1": METRICS["TADDA_1"],
                 "TADDA_2": METRICS["TADDA_2"],
+                "tadda_GFFO":METRICS["tadda_GFFO"],
 
             }.items():
                 ablated_score = function(obs, ablated_ensemble)
@@ -546,6 +556,8 @@ def ablation_study(df, column_sets):
                     "MSE": METRICS["MSE"],
                     "TADDA_1": METRICS["TADDA_1"],
                     "TADDA_2": METRICS["TADDA_2"],
+                    "tadda_GFFO": METRICS["tadda_GFFO"],
+                    "tadda_GFFO": METRICS["tadda_GFFO"],
 
                 }.items():
                     ablated_score = function(obs, ablated_ensemble)
